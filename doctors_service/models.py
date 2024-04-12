@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
+
 
 from doctors_patients_service import settings
 
@@ -15,12 +17,11 @@ class DoctorSpecialty(models.Model):
 
 
 class Doctor(AbstractUser):
-    licence_number = models.IntegerField(max_length=8, unique=True, blank=False)
+    licence_number = models.CharField(max_length=8, unique=True, blank=False)
     city = models.CharField(max_length=255)
     hospital = models.CharField(max_length=255)
     specialty = models.ManyToManyField(
         DoctorSpecialty,
-        on_delete=models.CASCADE,
         related_name="doctors"
     )
 
@@ -66,12 +67,13 @@ class Appointment(models.Model):
         on_delete=models.CASCADE,
         related_name="appointments",
     )
-    doctor_schedule = models.ForeignKey(
+    doctor_schedule = models.ManyToManyField(
         DoctorSchedule,
-        on_delete=models.CASCADE,
         related_name="appointments",
     )
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
-    phone = models.CharField(max_length=13)
+    phone = PhoneNumberField()
+    insurance_number = models.CharField(max_length=255)
+    comments = models.TextField(blank=True)
