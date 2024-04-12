@@ -50,8 +50,28 @@ class DoctorSchedule(models.Model):
         on_delete=models.CASCADE,
         related_name="doctor_schedule",
     )
-    date = models.DateField(help_text="YYYY-MM-DD")
+    date = models.DateField(help_text="DD-MM-YYYY")
     timeslot = models.IntegerField(choices=TIMESLOT_LIST)
 
     class Meta:
         unique_together = ("doctor", "date", "timeslot", )
+
+    def __str__(self):
+        return f"{self.doctor} {self.date} {self.timeslot}"
+
+
+class Appointment(models.Model):
+    doctor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="appointments",
+    )
+    doctor_schedule = models.ForeignKey(
+        DoctorSchedule,
+        on_delete=models.CASCADE,
+        related_name="appointments",
+    )
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255)
+    phone = models.CharField(max_length=13)
