@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from doctors_patients_service import settings
+
 
 class DoctorSpecialty(models.Model):
     specialty = models.CharField(max_length=255)
@@ -44,7 +46,7 @@ class DoctorSchedule(models.Model):
         (7, "17:00 – 18:00"),
     )
     doctor = models.ForeignKey(
-        Doctor,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="doctor_schedule",
     )
