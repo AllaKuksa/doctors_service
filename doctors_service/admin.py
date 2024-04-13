@@ -41,5 +41,11 @@ class DoctorSpecialtyAdmin(admin.ModelAdmin):
     search_fields = ("specialty",)
 
 
-admin.site.register(DoctorSchedule)
-admin.site.register(Appointment)
+@admin.register(DoctorSchedule)
+class DoctorScheduleAdmin(admin.ModelAdmin):
+    list_display = ("doctor", "date", "time",)
+
+
+@admin.register(Appointment)
+class AppointmentAdmin(admin.ModelAdmin):
+    list_display = ("doctor", "doctor_schedule", "first_name", "last_name",)

@@ -29,7 +29,7 @@ class Doctor(AbstractUser):
         ordering = ("city", "hospital",)
 
     def __str__(self):
-        return f"doctor: {self.first_name} {self.last_name}"
+        return f"{self.first_name} {self.last_name}"
 
 
 class DoctorSchedule(models.Model):
@@ -54,13 +54,14 @@ class DoctorSchedule(models.Model):
 
     class Meta:
         unique_together = ("doctor", "date", "timeslot", )
+        ordering = ("date", "timeslot",)
 
     @property
     def time(self):
         return self.TIMESLOT_LIST[self.timeslot][1]
 
     def __str__(self):
-        return f"{self.doctor} {self.date} / {self.time}"
+        return f"{self.date} / {self.time}"
 
 
 class Appointment(models.Model):
@@ -80,6 +81,9 @@ class Appointment(models.Model):
     phone = PhoneNumberField()
     insurance_number = models.CharField(max_length=255)
     comments = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ("doctor_schedule",)
 
     def __str__(self):
         return f"patient {self.first_name} {self.last_name} has a visit - {self.doctor_schedule}"
