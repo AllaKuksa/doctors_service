@@ -17,5 +17,4 @@ def index(request: HttpRequest) -> HttpResponse:
         "num_patients": num_patients,
     }
 
-    return render(request, "doctors_service/index.html")
-
+    return render(request, "doctors_service/index.html", context=context)
