@@ -26,12 +26,10 @@ class Doctor(AbstractUser):
     )
 
     class Meta:
-        ordering = ("hospital", "city",)
+        ordering = ("city", "hospital",)
 
     def __str__(self):
-        return (f"{self.first_name} {self.last_name} "
-                f"with specialty {self.specialty}  - "
-                f"city {self.city} in {self.hospital}")
+        return f"doctor: {self.first_name} {self.last_name}"
 
 
 class DoctorSchedule(models.Model):
@@ -57,8 +55,12 @@ class DoctorSchedule(models.Model):
     class Meta:
         unique_together = ("doctor", "date", "timeslot", )
 
+    @property
+    def time(self):
+        return self.TIMESLOT_LIST[self.timeslot][1]
+
     def __str__(self):
-        return f"{self.doctor} {self.date} {self.timeslot}"
+        return f"{self.doctor} {self.date} / {self.time}"
 
 
 class Appointment(models.Model):
@@ -67,8 +69,9 @@ class Appointment(models.Model):
         on_delete=models.CASCADE,
         related_name="appointments",
     )
-    doctor_schedule = models.ManyToManyField(
+    doctor_schedule = models.ForeignKey(
         DoctorSchedule,
+        on_delete=models.CASCADE,
         related_name="appointments",
     )
     first_name = models.CharField(max_length=255)
@@ -77,3 +80,6 @@ class Appointment(models.Model):
     phone = PhoneNumberField()
     insurance_number = models.CharField(max_length=255)
     comments = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"patient {self.first_name} {self.last_name} has a visit - {self.doctor_schedule}"
