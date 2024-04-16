@@ -186,7 +186,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "doctor",
+                    "doctors",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name="doctor_schedule",
@@ -195,7 +195,7 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "unique_together": {("doctor", "date", "timeslot")},
+                "unique_together": {("doctors", "date", "timeslot")},
             },
         ),
         migrations.CreateModel(
@@ -222,7 +222,7 @@ class Migration(migrations.Migration):
                 ("insurance_number", models.CharField(max_length=255)),
                 ("comments", models.TextField(blank=True)),
                 (
-                    "doctor",
+                    "doctors",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name="appointments",

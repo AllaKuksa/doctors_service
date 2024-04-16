@@ -53,7 +53,7 @@ class DoctorSchedule(models.Model):
     timeslot = models.IntegerField(choices=TIMESLOT_LIST)
 
     class Meta:
-        unique_together = ("doctor", "date", "timeslot", )
+        unique_together = ("doctors", "date", "timeslot", )
         ordering = ("date", "timeslot",)
 
     @property

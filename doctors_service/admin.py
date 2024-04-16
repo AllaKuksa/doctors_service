@@ -43,9 +43,9 @@ class DoctorSpecialtyAdmin(admin.ModelAdmin):
 
 @admin.register(DoctorSchedule)
 class DoctorScheduleAdmin(admin.ModelAdmin):
-    list_display = ("doctor", "date", "time",)
+    list_display = ("doctors", "date", "time",)
 
 
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ("doctor", "doctor_schedule", "first_name", "last_name",)
+    list_display = ("doctors", "doctor_schedule", "first_name", "last_name",)
