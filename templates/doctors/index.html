@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  
+   <h1>Doctors and Patients Service</h1>
+   <p>The largest resource for booking medical services</p>
+   <p>Convenient online medicine</p>
+   <p>Doctors and Patients Service has the following record counts:</p>
+   <ul>
+     <li><strong>Doctors:</strong> {{ num_doctors }}+</li>
+     <li><strong>Specialties:</strong> {{ num_specialties }}+</li>
+     <li><strong>Appointments:</strong> {{ num_appointments }}+</li>
+     <li><strong>Patients:</strong> {{ num_patients }}+</li>
+   </ul>
+
+{% endblock %}
