@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container-fluid" style="margin-top: 80px;">
+    <h1>{{ specialty.specialty }}</h1>
+      <ul>
+        {% for doctor in doctors_list %}
+          <li>
+{#            <a href="{% url # doctor.pk %}"> {{ doctor.first_name }} {{ doctor.last_name }}</a>#}
+          </li>
+        {% endfor %}
+      </ul>
+  </div>
+{% endblock %}

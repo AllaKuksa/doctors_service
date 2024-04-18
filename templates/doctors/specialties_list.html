@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container-fluid" style="margin-top: 80px;">
+    {% if specialties_list %}
+      <ul>
+      {% for specialty in specialties_list %}
+        <li>
+          <a href="{% url 'doctors_service:specialties-detail' pk=specialty.id%}">
+          {{ specialty.specialty }}</a>
+        </li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endblock %}
