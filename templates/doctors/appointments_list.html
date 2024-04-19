@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>List of appointments</h1>
+  {% if appointments_list %}
+    <table class="table">
+      <tr>
+        <th>ID</th>
+        <th>Doctor</th>
+        <th>Patient</th>
+        <th>Date</th>
+        <th>Time</th>
+      </tr>
+    {% for appointment in appointments_list %}
+       <tr>
+          <td>
+            <a href={% url 'doctors_service:appointment-detail' appointment.pk %}>
+              {{ appointment.id }}
+            </a>
+          </td>
+          <td>
+            {{ appointment.doctor }}
+          </td>
+          <td>
+            {{ appointment.first_name }} {{ appointment.last_name }}
+          </td>
+          <td>
+            {{ appointment.doctor_schedule.date }}
+          </td>
+          <td>
+            {{ appointment.doctor_schedule.time }}
+          </td>
+       </tr>
+    {% endfor %}
+  {% endif %}
+  </table>
+{% endblock %}

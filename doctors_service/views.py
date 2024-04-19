@@ -1,5 +1,8 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import generic
 
 
@@ -53,4 +56,22 @@ class DoctorDetailView(generic.DetailView):
     template_name = "doctors/doctors_detail.html"
     context_object_name = "doctor"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        doctor = self.get_object()
+        doctor_schedule = doctor.doctor_schedule.all()
+        context["doctor_schedule"] = doctor_schedule
+        return context
 
+
+class AppointmentListView(generic.ListView, LoginRequiredMixin):
+    model = Appointment
+    template_name = "doctors/appointments_list.html"
+    context_object_name = "appointments_list"
+    paginate_by = 5
+
+
+class AppointmentDetailView(generic.DetailView, LoginRequiredMixin):
+    model = Appointment
+    template_name = "doctors/appointment_detail.html"
+    context_object_name = "appointment_detail"
