@@ -24,7 +24,6 @@ def index(request: HttpRequest) -> HttpResponse:
 
 class DoctorSpecialtyListView(generic.ListView):
     model = DoctorSpecialty
-    paginate_by = 5
     template_name = "doctors/specialties_list.html"
     context_object_name = "specialties_list"
 
@@ -40,3 +39,18 @@ class DoctorSpecialtyDetailView(generic.DetailView):
         doctors = specialty.doctors.all()
         context["doctors_list"] = doctors
         return context
+
+
+class DoctorListView(generic.ListView):
+    model = Doctor
+    template_name = "doctors/doctors_list.html"
+    context_object_name = "doctors_list"
+    paginate_by = 5
+
+
+class DoctorDetailView(generic.DetailView):
+    model = Doctor
+    template_name = "doctors/doctors_detail.html"
+    context_object_name = "doctor"
+
+

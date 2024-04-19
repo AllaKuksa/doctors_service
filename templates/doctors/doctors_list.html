@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container-fluid" style="margin-top: 80px;">
+    {% if doctors_list %}
+      <ul>
+      {% for doctor in doctors_list %}
+        <li>
+          <a href="{% url 'doctors_service:doctors-detail' doctor.pk %}"> {{ doctor.first_name }} {{ doctor.last_name }}</a>
+        </li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endblock %}
