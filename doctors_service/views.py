@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 
-from doctors_service.models import Doctor, DoctorSpecialty, Appointment
+from doctors_service.models import Doctor, DoctorSpecialty, Appointment, DoctorSchedule
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -64,14 +64,24 @@ class DoctorDetailView(generic.DetailView):
         return context
 
 
-class AppointmentListView(generic.ListView, LoginRequiredMixin):
+class AppointmentListView(LoginRequiredMixin, generic.ListView):
     model = Appointment
     template_name = "doctors/appointments_list.html"
     context_object_name = "appointments_list"
     paginate_by = 5
 
 
-class AppointmentDetailView(generic.DetailView, LoginRequiredMixin):
+class AppointmentDetailView(LoginRequiredMixin, generic.DetailView):
     model = Appointment
     template_name = "doctors/appointment_detail.html"
     context_object_name = "appointment_detail"
+
+
+class DoctorScheduleCreateView(LoginRequiredMixin, generic.CreateView):
+    model = DoctorSchedule
+    fields = "__all__"
+    template_name = "doctors/doctor_schedule_form.html"
+
+    def get_success_url(self):
+        doctor_id = self.kwargs["pk"]
+        return reverse_lazy("doctors_service:doctors-detail", kwargs={"pk": doctor_id})

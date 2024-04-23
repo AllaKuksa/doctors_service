@@ -22,4 +22,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("doctors_service/", include("doctors_service.urls", namespace="doctors_service")),
     path("__debug__/", include("debug_toolbar.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
 ]

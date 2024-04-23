@@ -49,7 +49,7 @@ class DoctorSchedule(models.Model):
         on_delete=models.CASCADE,
         related_name="doctor_schedule",
     )
-    date = models.DateField(help_text="DD-MM-YYYY")
+    date = models.DateField(help_text="YYYY-MM-DD")
     timeslot = models.IntegerField(choices=TIMESLOT_LIST)
 
     class Meta:
@@ -87,3 +87,5 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"patient {self.first_name} {self.last_name} has a visit - {self.doctor_schedule}"
+
+

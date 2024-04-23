@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1 style='margin-top: 80px'>Doctors: {{ doctor.first_name }} {{ doctor.last_name }}</h1>
+  <h1 style='margin-top: 80px'>
+    Doctors: {{ doctor.first_name }} {{ doctor.last_name }}
+  </h1>
   <p><strong>Speciality</strong>:
     {% for specialty in doctor.specialty.all %}
       <li> {{ specialty.specialty }}</li>
@@ -10,7 +12,10 @@
   <p><strong>Licence number: </strong>{{ doctor.licence_number }}</p>
   <p><strong>City: </strong>{{ doctor.city }}</p>
   <p><strong>Hospital: </strong>{{ doctor.hospital }}</p>
-  <p><strong>Schedule:</strong>
+  <p><strong>
+    Free Schedule: 
+    <a href="{% url 'doctors_service:doctor-schedule-form' pk=doctor.pk  %}"> + add additional appointment time for patients </a>
+  </strong>
   {% if doctor_schedule %}
     {% for schedule in doctor_schedule %}
       <li>{{ schedule.date }} - {{ schedule.time }}</li>
