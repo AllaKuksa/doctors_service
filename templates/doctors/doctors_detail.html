@@ -13,14 +13,35 @@
   <p><strong>City: </strong>{{ doctor.city }}</p>
   <p><strong>Hospital: </strong>{{ doctor.hospital }}</p>
   <p><strong>
-    Free Schedule: 
+    Free Schedule:
     <a href="{% url 'doctors_service:doctor-schedule-form' pk=doctor.pk  %}"> + add additional appointment time for patients </a>
   </strong>
-  {% if doctor_schedule %}
-    {% for schedule in doctor_schedule %}
-      <li>{{ schedule.date }} - {{ schedule.time }}</li>
-    {% endfor %}
+  {% if available_schedule %}
+    <div style="margin-right: 20px">
+      <table class="table table-sm table-info">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Time</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for schedule in available_schedule %}
+            <tr>
+              <td>{{ schedule.date }}</td>
+              <td>{{ schedule.time }}</td>
+              <td>
+                <a href="{% url 'doctors_service:doctor-schedule-confirm-delete' doctor_id=doctor.id pk=schedule.id %}">
+                  <button type="button" class="btn btn-primary">delete</button>
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   {% else %}
-    <p style="color: red">There is no free time in the doctor schedule.</p>
+    <p style="color: red">There is no free time in the doctor's schedule.</p>
   {% endif %}
 {% endblock %}

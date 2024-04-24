@@ -1,9 +1,11 @@
 body {
     margin-top: 20px;
     margin-left: 20px;
+    margin-right: 20px;
     font-size: 1rem;
     font-weight: 400;
     line-height: 2;
     color: #082357;
     background-color: #fff;
 }
+

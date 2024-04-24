@@ -60,7 +60,11 @@ class DoctorDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         doctor = self.get_object()
         doctor_schedule = doctor.doctor_schedule.all()
-        context["doctor_schedule"] = doctor_schedule
+        available_schedule = [
+            schedule for schedule in doctor_schedule if not
+            Appointment.objects.filter(doctor_schedule=schedule).exists()
+        ]
+        context["available_schedule"] = available_schedule
         return context
 
 
@@ -81,6 +85,20 @@ class DoctorScheduleCreateView(LoginRequiredMixin, generic.CreateView):
     model = DoctorSchedule
     fields = "__all__"
     template_name = "doctors/doctor_schedule_form.html"
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial["doctor"] = self.request.user.id
+        return initial
+
+    def get_success_url(self):
+        doctor_id = self.kwargs["pk"]
+        return reverse_lazy("doctors_service:doctors-detail", kwargs={"pk": doctor_id})
+
+
+class DoctorScheduleDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = DoctorSchedule
+    template_name = "doctors/doctor_schedule_confirm_delete.html"
 
     def get_success_url(self):
         doctor_id = self.kwargs["pk"]
