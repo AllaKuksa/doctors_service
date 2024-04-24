@@ -6,13 +6,13 @@
     <div class="row">
       {% for specialty in specialties_list %}
         <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
-          <div class="card text-center">
+          <div class="card text-center border-0">
             <a href="{% url 'doctors_service:specialties-detail' pk=specialty.id %}">
-              <img src="{% static 'img/specialty_icon/' %}{{ specialty.id }}.png" class="card-img-top" alt="{{ specialty.specialty }}" style="width: 60%;">
+              <img src="{% static 'img/specialty_icon/' %}{{ specialty.id }}.png" class="card-img-top icon_style" alt="{{ specialty.specialty }}">
             </a>
             <div class="card-body">
               <a href="{% url 'doctors_service:specialties-detail' pk=specialty.id%}">
-                <h5 class="card-title" style="text-align: center">{{ specialty.specialty }}</h5>
+                <h5 class="card-title card_title">{{ specialty.specialty }}</h5>
               </a>
             </div>
           </div>
