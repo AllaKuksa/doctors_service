@@ -1,12 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Prefetch
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
-from doctors_service.forms import DoctorCreateForm
+from doctors_service.forms import DoctorCreationForm, DoctorUpdateForm
 from doctors_service.models import Doctor, DoctorSpecialty, Appointment, DoctorSchedule
 
 
@@ -108,19 +107,27 @@ class DoctorScheduleDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class DoctorCreateView(generic.CreateView):
-    form_class = DoctorCreateForm
     model = Doctor
-    template_name = "doctors/doctor_create.html"
+    form_class = DoctorCreationForm
     success_url = reverse_lazy("doctors_service:doctors-list")
+    template_name = "doctors/doctor_form.html"
 
 
 class DoctorUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Doctor
-    template_name = "doctors/doctor_create.html"
-    form_class = DoctorCreateForm
-    success_url = reverse_lazy("doctors_service:doctors-list")
+    form_class = DoctorUpdateForm
+    template_name = "doctors/doctor_form.html"
+
+    def get_success_url(self):
+        doctor_id = self.kwargs["pk"]
+        return reverse_lazy("doctors_service:doctors-detail", kwargs={"pk": doctor_id})
 
 
 class DoctorDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Doctor
-    success_url = reverse_lazy("doctors_service:index")
+    template_name = "doctors/doctor_delete.html"
+
+    def get_success_url(self):
+        doctor_id = self.kwargs["pk"]
+        return reverse_lazy("doctors_service:doctors-detail", kwargs={"pk": doctor_id})
+

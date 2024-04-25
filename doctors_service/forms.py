@@ -16,7 +16,7 @@ def validate_licence_number(licence_number):
     return licence_number
 
 
-class DoctorCreateForm(UserCreationForm):
+class DoctorCreationForm(UserCreationForm):
 
     specialty = forms.ModelMultipleChoiceField(
         queryset=DoctorSpecialty.objects.all(),
@@ -44,4 +44,16 @@ class DoctorCreateForm(UserCreationForm):
         return validate_licence_number(self.cleaned_data["licence_number"])
 
 
+class DoctorUpdateForm(forms.ModelForm):
 
+    specialty = forms.ModelMultipleChoiceField(
+        queryset=DoctorSpecialty.objects.all(),
+        widget=forms.CheckboxSelectMultiple(),
+    )
+
+    class Meta:
+        model = Doctor
+        fields = ["licence_number", "city", "hospital", "specialty"]
+
+    def clean_licence_number(self):
+        return validate_licence_number(self.cleaned_data["licence_number"])

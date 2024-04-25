@@ -3,6 +3,8 @@
 {% block content %}
   <h1 style='margin-top: 80px'>
     Doctors: {{ doctor.first_name }} {{ doctor.last_name }}
+    <a style="float: right" class="button btn btn-danger" href="{% url 'doctors_service:doctor-delete' pk=doctor.id %}">Delete</a>  
+    <a style="float: right" class="button btn btn-primary" href="{% url 'doctors_service:doctor-update' pk=doctor.id %}">Update</a>
   </h1>
   <p><strong>Speciality</strong>:
     {% for specialty in doctor.specialty.all %}
@@ -15,7 +17,10 @@
   <p><strong>Hospital: </strong>{{ doctor.hospital }}</p>
   <p><strong>
     Free Schedule:
-    <a href="{% url 'doctors_service:doctor-schedule-form' pk=doctor.pk  %}"> + add additional appointment time for patients </a>
+    <a class="button btn btn-success" 
+       href="{% url 'doctors_service:doctor-schedule-form' pk=doctor.pk  %}"> 
+      + add additional appointment time for patients 
+    </a>
   </strong>
   {% if available_schedule %}
     <div style="margin-right: 20px">
