@@ -8,7 +8,9 @@ from doctors_service.views import (index,
                                    AppointmentDetailView,
                                    DoctorScheduleCreateView,
                                    DoctorScheduleDeleteView,
-                                   DoctorCreateView)
+                                   DoctorCreateView,
+                                   DoctorUpdateView,
+                                   DoctorDeleteView)
 
 urlpatterns = [
     path("", index, name="index"),
@@ -24,6 +26,8 @@ urlpatterns = [
         DoctorScheduleDeleteView.as_view(),
         name="doctor-schedule-confirm-delete"),
     path("doctors/create/", DoctorCreateView.as_view(), name="doctor-create"),
+    path("doctors/<int:pk>/update/", DoctorUpdateView.as_view(), name="doctor-update"),
+    path("doctors/<int:pk>/deleted/", DoctorDeleteView.as_view(), name="doctor-delete")
 ]
 
 app_name = "doctors_service"

@@ -17,9 +17,9 @@ class DoctorSpecialty(models.Model):
 
 
 class Doctor(AbstractUser):
-    licence_number = models.CharField(max_length=8, unique=True, blank=False)
-    city = models.CharField(max_length=255)
-    hospital = models.CharField(max_length=255)
+    licence_number = models.CharField(max_length=8, unique=True)
+    city = models.CharField(max_length=255, blank=False)
+    hospital = models.CharField(max_length=255, blank=False)
     specialty = models.ManyToManyField(
         DoctorSpecialty,
         related_name="doctors"
@@ -79,7 +79,7 @@ class Appointment(models.Model):
     last_name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
     phone = PhoneNumberField()
-    insurance_number = models.CharField(max_length=255)
+    insurance_number = models.IntegerField(max_length=10, unique=True, blank=False)
     comments = models.TextField(blank=True)
 
     class Meta:
