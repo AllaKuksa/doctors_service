@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
-from doctors_service.forms import DoctorCreationForm, DoctorUpdateForm
+from doctors_service.forms import DoctorCreationForm, DoctorUpdateForm, AppointmentCreationForm
 from doctors_service.models import Doctor, DoctorSpecialty, Appointment, DoctorSchedule
 
 
@@ -130,4 +130,20 @@ class DoctorDeleteView(LoginRequiredMixin, generic.DeleteView):
     def get_success_url(self):
         doctor_id = self.kwargs["pk"]
         return reverse_lazy("doctors_service:doctors-detail", kwargs={"pk": doctor_id})
+
+
+class AppointmentCreateView(generic.CreateView):
+    model = Appointment
+    form_class = AppointmentCreationForm
+    template_name = "doctors/appointment_form.html"
+    success_url = reverse_lazy("doctors_service:appointment-confirm")
+
+    def get_success_url(self):
+        return reverse_lazy("doctors_service:appointment-confirm", kwargs={"pk": self.object.pk})
+
+
+class AppointmentConfirmationDetailView(generic.DetailView):
+    model = Appointment
+    context_object_name = "appointment"
+    template_name = "doctors/appointment_confirm.html"
 

@@ -30,7 +30,7 @@
             <th scope="col">Date</th>
             <th scope="col">Time</th>
             <th scope="col"></th>
-            <th scope="col">Book appointment</th>
+            <th scope="col">Book Appointment</th>
           </tr>
         </thead>
         <tbody>
@@ -44,9 +44,9 @@
                 </a>
               </td>
               <td>
-{#                <a href="{% url 'doctors_service:doctor-schedule-confirm-delete' doctor_id=doctor.id pk=schedule.id %}">#}
-{#                  <button type="button" class="btn btn-primary">book</button>#}
-{#                </a>#}
+                <a href="{% url 'doctors_service:appointment-form' %}">
+                  <button type="button" class="btn btn-primary">book</button>
+                </a>
               </td>
             </tr>
           {% endfor %}

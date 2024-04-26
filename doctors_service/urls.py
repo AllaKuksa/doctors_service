@@ -1,4 +1,6 @@
 from django.urls import path
+
+from doctors_service import views
 from doctors_service.views import (index,
                                    DoctorSpecialtyListView,
                                    DoctorSpecialtyDetailView,
@@ -10,7 +12,9 @@ from doctors_service.views import (index,
                                    DoctorScheduleDeleteView,
                                    DoctorCreateView,
                                    DoctorUpdateView,
-                                   DoctorDeleteView)
+                                   DoctorDeleteView,
+                                   AppointmentCreateView,
+                                   AppointmentConfirmationDetailView,)
 
 urlpatterns = [
     path("", index, name="index"),
@@ -25,9 +29,11 @@ urlpatterns = [
         "doctors/<int:doctor_id>/delete_schedule/<int:pk>/",
         DoctorScheduleDeleteView.as_view(),
         name="doctor-schedule-confirm-delete"),
-    path("doctors/create/", DoctorCreateView.as_view(), name="doctor-create"),
+    path("doctors/create/", DoctorCreateView.as_view(), name="doctor-form"),
     path("doctors/<int:pk>/update/", DoctorUpdateView.as_view(), name="doctor-update"),
-    path("doctors/<int:pk>/deleted/", DoctorDeleteView.as_view(), name="doctor-delete")
+    path("doctors/<int:pk>/deleted/", DoctorDeleteView.as_view(), name="doctor-delete"),
+    path("appointments/create/", AppointmentCreateView.as_view(), name="appointment-form"),
+    path("appointments/confirmation/<int:pk>/", AppointmentConfirmationDetailView.as_view(), name="appointment-confirm"),
 ]
 
 app_name = "doctors_service"

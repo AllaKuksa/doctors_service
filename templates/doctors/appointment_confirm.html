@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  
+  <h1 style="margin-top: 80px;">Appointment confirmation</h1>
+    <p><strong>{{ appointment.first_name }} {{ appointment.last_name }} thank you for you appointment</strong></p>
+    <p>The number of your appointment: <strong>{{ appointment.id }}</strong></p>
+    <p>Wait for you <strong>{{ appointment.doctor_schedule }}</strong></p>
+    <p><strong>Doctor:</strong> {{ appointment.doctor }}</p>
+    <p><strong>Hospital:</strong> {{ appointment.doctor.hospital }}</p>
+    <p><strong>City:</strong> {{ appointment.doctor.city }}</p>
+  
+{% endblock %}

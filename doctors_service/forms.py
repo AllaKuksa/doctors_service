@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.core.exceptions import ValidationError
 
-from doctors_service.models import Doctor, DoctorSpecialty
+from doctors_service.models import Doctor, DoctorSpecialty, Appointment, DoctorSchedule
 
 
 def validate_licence_number(licence_number):
@@ -57,3 +57,28 @@ class DoctorUpdateForm(forms.ModelForm):
 
     def clean_licence_number(self):
         return validate_licence_number(self.cleaned_data["licence_number"])
+
+
+class AppointmentCreationForm(forms.ModelForm):
+
+    class Meta:
+        model = Appointment
+        fields = "__all__"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
