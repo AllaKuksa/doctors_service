@@ -5,11 +5,31 @@
   
   <h1 style="margin-top: 80px">Make an appointment to the doctor</h1>
   
-  <form action="" method="post">
+  <form method="post" id="personForm" data-doctor_schedules-url="{% url 'doctors_service:ajax_load_doctor_schedules' %}" novalidate>
     {% csrf_token %}
-    {{ form|crispy }}
-    <input class="btn btn-primary" type="submit" value="Submit">
+    <table>
+      {{ form|crispy }}
+    </table>
+    <button class="button btn btn-primary" type="submit">Create Appointment</button>
   </form>
 
-  
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    $("#id_doctor").change(function () {
+      var url = $("#personForm").attr("data-doctor_schedules-url");  // get the url of the `load_cities` view
+      var doctorId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'doctor': doctorId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_doctor_schedule").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
 {% endblock %}

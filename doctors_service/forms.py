@@ -61,9 +61,26 @@ class DoctorUpdateForm(forms.ModelForm):
 
 class AppointmentCreationForm(forms.ModelForm):
 
+    doctor_schedule = forms.ModelChoiceField(
+        queryset=DoctorSchedule.objects.filter(is_booked=False)
+    )
+
     class Meta:
         model = Appointment
         fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["doctor_schedule"].queryset = DoctorSchedule.objects.none()
+
+        if "doctor" in self.data:
+            try:
+                doctor_id = int(self.data.get('doctor'))
+                self.fields['doctor_schedule'].queryset = DoctorSchedule.objects.filter(doctor_id=doctor_id)
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['doctor_schedule'].queryset = self.instance.doctor.doctor_schedule_set
 
 
 

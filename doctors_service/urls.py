@@ -14,7 +14,8 @@ from doctors_service.views import (index,
                                    DoctorUpdateView,
                                    DoctorDeleteView,
                                    AppointmentCreateView,
-                                   AppointmentConfirmationDetailView,)
+                                   AppointmentConfirmationDetailView,
+                                   load_doctor_schedule)
 
 urlpatterns = [
     path("", index, name="index"),
@@ -34,6 +35,7 @@ urlpatterns = [
     path("doctors/<int:pk>/deleted/", DoctorDeleteView.as_view(), name="doctor-delete"),
     path("appointments/create/", AppointmentCreateView.as_view(), name="appointment-form"),
     path("appointments/confirmation/<int:pk>/", AppointmentConfirmationDetailView.as_view(), name="appointment-confirm"),
+    path('ajax/load-doctor_schedules/', load_doctor_schedule, name='ajax_load_doctor_schedules'),
 ]
 
 app_name = "doctors_service"

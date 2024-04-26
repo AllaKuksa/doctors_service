@@ -51,6 +51,7 @@ class DoctorSchedule(models.Model):
     )
     date = models.DateField(help_text="YYYY-MM-DD")
     timeslot = models.IntegerField(choices=TIMESLOT_LIST)
+    is_booked = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ("doctor", "date", "timeslot", )
