@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
-from doctors_service.forms import DoctorCreationForm, DoctorUpdateForm, AppointmentCreationForm
+from doctors_service.forms import DoctorCreationForm, DoctorUpdateForm, AppointmentCreationForm, DoctorSearchForm
 from doctors_service.models import Doctor, DoctorSpecialty, Appointment, DoctorSchedule
 
 
@@ -49,6 +49,23 @@ class DoctorListView(generic.ListView):
     template_name = "doctors/doctors_list.html"
     context_object_name = "doctors_list"
     paginate_by = 5
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(DoctorListView, self).get_context_data(**kwargs)
+        city = self.request.GET.get("city", "")
+        context["search_form"] = DoctorSearchForm(
+            initial={
+                "city": city
+            }
+        )
+        return context
+
+    def get_queryset(self):
+        queryset = Doctor.objects.all()
+        form = DoctorSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(city__icontains=form.cleaned_data["city"])
+        return queryset
 
 
 class DoctorDetailView(generic.DetailView):

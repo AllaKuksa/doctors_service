@@ -16,6 +16,13 @@ def validate_licence_number(licence_number):
     return licence_number
 
 
+def validate_insurance_number(insurance_number):
+    if len([insurance_number]) != 10:
+        raise ValidationError("Insurance number should consist of 10 characters")
+    elif not insurance_number.isdigit():
+        raise ValidationError("Insurance number should consist of 10 digits")
+
+
 class DoctorCreationForm(UserCreationForm):
 
     specialty = forms.ModelMultipleChoiceField(
@@ -69,6 +76,9 @@ class AppointmentCreationForm(forms.ModelForm):
         model = Appointment
         fields = "__all__"
 
+    def clean_insurance_number(self):
+        return validate_insurance_number(self.cleaned_data["insurance_number"])
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["doctor_schedule"].queryset = DoctorSchedule.objects.none()
@@ -83,7 +93,14 @@ class AppointmentCreationForm(forms.ModelForm):
             self.fields['doctor_schedule'].queryset = self.instance.doctor.doctor_schedule_set
 
 
-
+class DoctorSearchForm(forms.Form):
+    city = forms.CharField(
+        max_length=255,
+        label="",
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search by city"}
+        )
+    )
 
 
 
