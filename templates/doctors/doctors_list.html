@@ -10,7 +10,7 @@
   <br>
   {% if doctors_list %}
     <table class="table">
-      <tr>
+      <tr class="table-primary">
         <th scope="col">ID</th>
         <th scope="col">Doctor</th>
         <th scope="col">City</th>
@@ -34,7 +34,9 @@
           {{ doctor.hospital }}
         </td>
         <td>
-          {{ doctor.specialty }}
+          {% for specialty in doctor.specialty.all %}
+            {{ specialty.specialty }}<br>
+          {% endfor %}
         </td>
       </tr>
     {% endfor %}

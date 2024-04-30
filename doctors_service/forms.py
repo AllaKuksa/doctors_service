@@ -85,17 +85,18 @@ class AppointmentCreationForm(forms.ModelForm):
 
         if "doctor" in self.data:
             try:
-                doctor_id = int(self.data.get('doctor'))
-                self.fields['doctor_schedule'].queryset = DoctorSchedule.objects.filter(doctor_id=doctor_id)
+                doctor_id = int(self.data.get("doctor"))
+                self.fields["doctor_schedule"].queryset = DoctorSchedule.objects.filter(doctor_id=doctor_id)
             except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty City queryset
+                pass
         elif self.instance.pk:
-            self.fields['doctor_schedule'].queryset = self.instance.doctor.doctor_schedule_set
+            self.fields["doctor_schedule"].queryset = self.instance.doctor.doctor_schedule_set
 
 
 class DoctorSearchForm(forms.Form):
     city = forms.CharField(
         max_length=255,
+        required=False,
         label="",
         widget=forms.TextInput(
             attrs={"placeholder": "Search by city"}
@@ -103,16 +104,11 @@ class DoctorSearchForm(forms.Form):
     )
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+class AppointmentSearchForm(forms.Form):
+    date = forms.DateField(
+        required=False,
+        label="",
+        widget=forms.DateInput(
+            attrs={"placeholder": "Search by date YYYY-MM-DD"}
+        )
+    )
