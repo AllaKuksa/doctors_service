@@ -1,8 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
-
-
 from doctors_patients_service import settings
 
 
@@ -87,6 +85,5 @@ class Appointment(models.Model):
         ordering = ("doctor_schedule",)
 
     def __str__(self):
-        return f"patient {self.first_name} {self.last_name} has a visit - {self.doctor_schedule}"
-
-
+        return (f"patient {self.first_name} {self.last_name} has a visit - "
+                f"{self.doctor_schedule}")

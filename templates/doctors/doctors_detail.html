@@ -2,19 +2,27 @@
 
 {% block content %}
   <h1 style='margin-top: 80px'>
-    Doctors: {{ doctor.first_name }} {{ doctor.last_name }}
+    Doctor: {{ doctor.first_name }} {{ doctor.last_name }}
     <a style="float: right" class="button btn btn-danger" href="{% url 'doctors_service:doctor-delete' pk=doctor.id %}">Delete</a>  
     <a style="float: right" class="button btn btn-primary" href="{% url 'doctors_service:doctor-update' pk=doctor.id %}">Update</a>
   </h1>
-  <p><strong>Speciality</strong>:
+  <p><strong>Speciality</strong>:</p>
     {% for specialty in doctor.specialty.all %}
-      <li> {{ specialty.specialty }}</li>
+      <ul>
+        <li> 
+          {{ specialty.specialty }}
+        </li>
+      </ul>
     {% endfor %}
-  </p>
+  <hr>
   <p><strong>email: </strong>{{ doctor.email }}</p>
+  <hr>
   <p><strong>Licence number: </strong>{{ doctor.licence_number }}</p>
+  <hr>
   <p><strong>City: </strong>{{ doctor.city }}</p>
+  <hr>
   <p><strong>Hospital: </strong>{{ doctor.hospital }}</p>
+  <hr>
   <p><strong>
     Free Schedule:
     <a class="button btn btn-success" 
@@ -23,13 +31,13 @@
     </a>
   </strong>
   {% if available_schedule %}
-    <div style="margin-right: 20px">
-      <table class="table table-sm table-info">
+    <div>
+      <table class="table">
         <thead>
-          <tr>
+          <tr class="table-primary">
             <th scope="col">Date</th>
             <th scope="col">Time</th>
-            <th scope="col"></th>
+            <th scope="col">Delete</th>
             <th scope="col">Book Appointment</th>
           </tr>
         </thead>
@@ -56,4 +64,5 @@
   {% else %}
     <p style="color: red">There is no free time in the doctor's schedule.</p>
   {% endif %}
+  
 {% endblock %}

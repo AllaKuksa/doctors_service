@@ -1,7 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from doctors_service.models import Doctor, DoctorSpecialty, DoctorSchedule, Appointment
+from doctors_service.models import (Doctor,
+                                    DoctorSpecialty,
+                                    DoctorSchedule,
+                                    Appointment)
 
 
 @admin.register(Doctor)

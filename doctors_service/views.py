@@ -1,19 +1,26 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
-from doctors_service.forms import DoctorCreationForm, DoctorUpdateForm, AppointmentCreationForm, DoctorSearchForm, AppointmentSearchForm
-from doctors_service.models import Doctor, DoctorSpecialty, Appointment, DoctorSchedule
+from doctors_service.forms import (DoctorCreationForm,
+                                   DoctorUpdateForm,
+                                   AppointmentCreationForm,
+                                   DoctorSearchForm,
+                                   AppointmentSearchForm)
+from doctors_service.models import (Doctor,
+                                    DoctorSpecialty,
+                                    Appointment,
+                                    DoctorSchedule)
 
 
 def index(request: HttpRequest) -> HttpResponse:
     num_doctors = Doctor.objects.count()
     num_specialties = DoctorSpecialty.objects.count()
     num_appointments = Appointment.objects.count()
-    num_patients = Appointment.objects.values("insurance_number").distinct().count()
+    num_patients = Appointment.objects.values(
+        "insurance_number").distinct().count()
 
     context = {
         "num_doctors": num_doctors,
@@ -61,7 +68,7 @@ class DoctorListView(generic.ListView):
         return context
 
     def get_queryset(self):
-        queryset = Doctor.objects.all()
+        queryset = Doctor.objects.prefetch_related("specialty")
         form = DoctorSearchForm(self.request.GET)
         if form.is_valid():
             return queryset.filter(city__icontains=form.cleaned_data["city"])
@@ -79,9 +86,8 @@ class DoctorDetailView(generic.DetailView):
 
         doctor_schedule = doctor.doctor_schedule.all()
 
-        available_schedule = [
-            schedule for schedule in doctor_schedule if not schedule.appointments.exists()
-        ]
+        available_schedule = [schedule for schedule in doctor_schedule
+                              if not schedule.appointments.exists()]
         context["available_schedule"] = available_schedule
         return context
 
@@ -103,10 +109,15 @@ class AppointmentListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        queryset = Appointment.objects.all()
+        queryset = Appointment.objects.select_related(
+            "doctor",
+            "doctor_schedule"
+        )
         form = AppointmentSearchForm(self.request.GET)
         if form.is_valid() and form.cleaned_data["date"] is not None:
-            return queryset.filter(doctor_schedule__date__icontains=form.cleaned_data["date"])
+            return queryset.filter(
+                doctor_schedule__date__icontains=form.cleaned_data["date"]
+            )
         return queryset
 
 
@@ -114,6 +125,13 @@ class AppointmentDetailView(LoginRequiredMixin, generic.DetailView):
     model = Appointment
     template_name = "doctors/appointment_detail.html"
     context_object_name = "appointment_detail"
+
+    def get_queryset(self):
+        queryset = Appointment.objects.select_related(
+            "doctor",
+            "doctor_schedule"
+        )
+        return queryset
 
 
 class DoctorScheduleCreateView(LoginRequiredMixin, generic.CreateView):
@@ -128,7 +146,10 @@ class DoctorScheduleCreateView(LoginRequiredMixin, generic.CreateView):
 
     def get_success_url(self):
         doctor_id = self.kwargs["pk"]
-        return reverse_lazy("doctors_service:doctors-detail", kwargs={"pk": doctor_id})
+        return reverse_lazy(
+            "doctors_service:doctors-detail",
+            kwargs={"pk": doctor_id}
+        )
 
 
 class DoctorScheduleDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -137,7 +158,10 @@ class DoctorScheduleDeleteView(LoginRequiredMixin, generic.DeleteView):
 
     def get_success_url(self):
         doctor_id = self.kwargs["pk"]
-        return reverse_lazy("doctors_service:doctors-detail", kwargs={"pk": doctor_id})
+        return reverse_lazy(
+            "doctors_service:doctors-detail",
+            kwargs={"pk": doctor_id}
+        )
 
 
 class DoctorCreateView(generic.CreateView):
@@ -154,7 +178,10 @@ class DoctorUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def get_success_url(self):
         doctor_id = self.kwargs["pk"]
-        return reverse_lazy("doctors_service:doctors-detail", kwargs={"pk": doctor_id})
+        return reverse_lazy(
+            "doctors_service:doctors-detail",
+            kwargs={"pk": doctor_id}
+        )
 
 
 class DoctorDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -163,7 +190,10 @@ class DoctorDeleteView(LoginRequiredMixin, generic.DeleteView):
 
     def get_success_url(self):
         doctor_id = self.kwargs["pk"]
-        return reverse_lazy("doctors_service:doctors-detail", kwargs={"pk": doctor_id})
+        return reverse_lazy(
+            "doctors_service:doctors-detail",
+            kwargs={"pk": doctor_id}
+        )
 
 
 class AppointmentConfirmationDetailView(generic.DetailView):
@@ -178,7 +208,10 @@ class AppointmentCreateView(generic.CreateView):
     template_name = "doctors/appointment_form.html"
 
     def get_success_url(self):
-        return reverse_lazy("doctors_service:appointment-confirm", kwargs={"pk": self.object.pk})
+        return reverse_lazy(
+            "doctors_service:appointment-confirm",
+            kwargs={"pk": self.object.pk}
+        )
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -189,10 +222,12 @@ class AppointmentCreateView(generic.CreateView):
 
 def load_doctor_schedule(request):
     doctor_id = request.GET.get("doctor")
-    doctor_schedules = DoctorSchedule.objects.filter(doctor_id=doctor_id, is_booked=False)
+    doctor_schedules = DoctorSchedule.objects.filter(
+        doctor_id=doctor_id,
+        is_booked=False
+    )
     return render(
         request,
-        'doctors/doctor_schedules_dropdown_list_options.html',
-        {'doctor_schedules': doctor_schedules}
+        "doctors/doctor_schedules_dropdown_list_options.html",
+        {"doctor_schedules": doctor_schedules}
     )
-

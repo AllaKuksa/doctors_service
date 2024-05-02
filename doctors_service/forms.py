@@ -2,7 +2,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.core.exceptions import ValidationError
 
-from doctors_service.models import Doctor, DoctorSpecialty, Appointment, DoctorSchedule
+from doctors_service.models import (Doctor,
+                                    DoctorSpecialty,
+                                    Appointment,
+                                    DoctorSchedule)
 
 
 def validate_licence_number(licence_number):
@@ -18,9 +21,13 @@ def validate_licence_number(licence_number):
 
 def validate_insurance_number(insurance_number):
     if len([insurance_number]) != 10:
-        raise ValidationError("Insurance number should consist of 10 characters")
+        raise ValidationError(
+            "Insurance number should consist of 10 characters"
+        )
     elif not insurance_number.isdigit():
-        raise ValidationError("Insurance number should consist of 10 digits")
+        raise ValidationError(
+            "Insurance number should consist of 10 digits"
+        )
 
 
 class DoctorCreationForm(UserCreationForm):
@@ -86,11 +93,15 @@ class AppointmentCreationForm(forms.ModelForm):
         if "doctor" in self.data:
             try:
                 doctor_id = int(self.data.get("doctor"))
-                self.fields["doctor_schedule"].queryset = DoctorSchedule.objects.filter(doctor_id=doctor_id)
+                self.fields["doctor_schedule"].queryset = (
+                    DoctorSchedule.objects.filter(doctor_id=doctor_id)
+                )
             except (ValueError, TypeError):
                 pass
         elif self.instance.pk:
-            self.fields["doctor_schedule"].queryset = self.instance.doctor.doctor_schedule_set
+            self.fields["doctor_schedule"].queryset = (
+                self.instance.doctor.doctor_schedule_set
+            )
 
 
 class DoctorSearchForm(forms.Form):

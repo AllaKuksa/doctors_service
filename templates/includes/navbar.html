@@ -28,6 +28,7 @@
             <a class="nav-link text-white" href="{% url 'doctors_service:appointment-form' %}">Make Appointment<span class="sr-only">(current)</span></a>
         </li>
     </ul>
+  
     {% if user.is_authenticated %}
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
@@ -41,6 +42,7 @@
                 </a>
             </li>
         </ul>
+      
     {% else %}
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
@@ -48,5 +50,6 @@
             </li>
         </ul>
     {% endif %}
+  
   </div>
 </nav>
