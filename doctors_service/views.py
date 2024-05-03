@@ -92,6 +92,38 @@ class DoctorDetailView(generic.DetailView):
         return context
 
 
+class DoctorCreateView(generic.CreateView):
+    model = Doctor
+    form_class = DoctorCreationForm
+    success_url = reverse_lazy("doctors_service:doctors-list")
+    template_name = "doctors/doctor_form.html"
+
+
+class DoctorUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Doctor
+    form_class = DoctorUpdateForm
+    template_name = "doctors/doctor_form.html"
+
+    def get_success_url(self):
+        doctor_id = self.kwargs["pk"]
+        return reverse_lazy(
+            "doctors_service:doctors-detail",
+            kwargs={"pk": doctor_id}
+        )
+
+
+class DoctorDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Doctor
+    template_name = "doctors/doctor_delete.html"
+
+    def get_success_url(self):
+        doctor_id = self.kwargs["pk"]
+        return reverse_lazy(
+            "doctors_service:doctors-detail",
+            kwargs={"pk": doctor_id}
+        )
+
+
 class AppointmentListView(LoginRequiredMixin, generic.ListView):
     model = Appointment
     template_name = "doctors/appointments_list.html"
@@ -134,6 +166,30 @@ class AppointmentDetailView(LoginRequiredMixin, generic.DetailView):
         return queryset
 
 
+class AppointmentConfirmationDetailView(generic.DetailView):
+    model = Appointment
+    context_object_name = "appointment"
+    template_name = "doctors/appointment_confirm.html"
+
+
+class AppointmentCreateView(generic.CreateView):
+    model = Appointment
+    form_class = AppointmentCreationForm
+    template_name = "doctors/appointment_form.html"
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "doctors_service:appointment-confirm",
+            kwargs={"pk": self.object.pk}
+        )
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        self.object.doctor_schedule.is_booked = True
+        self.object.doctor_schedule.save()
+        return response
+
+
 class DoctorScheduleCreateView(LoginRequiredMixin, generic.CreateView):
     model = DoctorSchedule
     fields = "__all__"
@@ -162,62 +218,6 @@ class DoctorScheduleDeleteView(LoginRequiredMixin, generic.DeleteView):
             "doctors_service:doctors-detail",
             kwargs={"pk": doctor_id}
         )
-
-
-class DoctorCreateView(generic.CreateView):
-    model = Doctor
-    form_class = DoctorCreationForm
-    success_url = reverse_lazy("doctors_service:doctors-list")
-    template_name = "doctors/doctor_form.html"
-
-
-class DoctorUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Doctor
-    form_class = DoctorUpdateForm
-    template_name = "doctors/doctor_form.html"
-
-    def get_success_url(self):
-        doctor_id = self.kwargs["pk"]
-        return reverse_lazy(
-            "doctors_service:doctors-detail",
-            kwargs={"pk": doctor_id}
-        )
-
-
-class DoctorDeleteView(LoginRequiredMixin, generic.DeleteView):
-    model = Doctor
-    template_name = "doctors/doctor_delete.html"
-
-    def get_success_url(self):
-        doctor_id = self.kwargs["pk"]
-        return reverse_lazy(
-            "doctors_service:doctors-detail",
-            kwargs={"pk": doctor_id}
-        )
-
-
-class AppointmentConfirmationDetailView(generic.DetailView):
-    model = Appointment
-    context_object_name = "appointment"
-    template_name = "doctors/appointment_confirm.html"
-
-
-class AppointmentCreateView(generic.CreateView):
-    model = Appointment
-    form_class = AppointmentCreationForm
-    template_name = "doctors/appointment_form.html"
-
-    def get_success_url(self):
-        return reverse_lazy(
-            "doctors_service:appointment-confirm",
-            kwargs={"pk": self.object.pk}
-        )
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        self.object.doctor_schedule.is_booked = True
-        self.object.doctor_schedule.save()
-        return response
 
 
 def load_doctor_schedule(request):
