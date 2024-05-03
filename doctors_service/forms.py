@@ -20,14 +20,16 @@ def validate_licence_number(licence_number):
 
 
 def validate_insurance_number(insurance_number):
-    if len([insurance_number]) != 10:
-        raise ValidationError(
+    if not insurance_number or len(insurance_number) != 10:
+        raise forms.ValidationError(
             "Insurance number should consist of 10 characters"
         )
     elif not insurance_number.isdigit():
-        raise ValidationError(
-            "Insurance number should consist of 10 digits"
+        raise forms.ValidationError(
+            "Insurance number should consist of digits only"
         )
+
+    return insurance_number
 
 
 class DoctorCreationForm(UserCreationForm):
@@ -74,10 +76,6 @@ class DoctorUpdateForm(forms.ModelForm):
 
 
 class AppointmentCreationForm(forms.ModelForm):
-
-    doctor_schedule = forms.ModelChoiceField(
-        queryset=DoctorSchedule.objects.filter(is_booked=False)
-    )
 
     class Meta:
         model = Appointment

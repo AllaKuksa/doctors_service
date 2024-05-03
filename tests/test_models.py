@@ -34,7 +34,8 @@ class ModelsTestCase(TestCase):
 
     def test_doctor_str(self):
         self.assertEqual(
-            str(self.user_doctor), f"{self.user_doctor.first_name} {self.user_doctor.last_name}"
+            str(self.user_doctor),
+            f"{self.user_doctor.first_name} {self.user_doctor.last_name}"
         )
 
     def test_create_doctor_with_additional_information(self):
@@ -75,7 +76,10 @@ class ModelsTestCase(TestCase):
         self.assertTrue(doctor.check_password(password))
 
     def test_doctor_schedule_str(self):
-        self.assertEqual(str(self.doctor_schedule), f"{self.doctor_schedule.date} / {self.doctor_schedule.time}")
+        self.assertEqual(
+            str(self.doctor_schedule),
+            f"{self.doctor_schedule.date} / {self.doctor_schedule.time}"
+        )
 
     def test_time_properly(self):
         self.assertEqual(self.doctor_schedule.time, "10:00 – 11:00")
@@ -98,7 +102,8 @@ class ModelsTestCase(TestCase):
         )
         self.assertEqual(
             str(appointment),
-            f"patient {appointment.first_name} {appointment.last_name} has a visit - {appointment.doctor_schedule}"
+            f"patient {appointment.first_name} {appointment.last_name} "
+            f"has a visit - {appointment.doctor_schedule}"
         )
 
     def test_appointment_creat(self):
@@ -122,5 +127,8 @@ class ModelsTestCase(TestCase):
         self.assertEqual(appointment.last_name, patient_last_name)
         self.assertEqual(appointment.email, email)
         self.assertEqual(appointment.phone, phone)
-        self.assertEqual(appointment.insurance_number, patient_insurance_number)
+        self.assertEqual(
+            appointment.insurance_number,
+            patient_insurance_number
+        )
         self.assertEqual(appointment.comments, comments)

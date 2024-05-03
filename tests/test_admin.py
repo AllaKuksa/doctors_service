@@ -25,7 +25,10 @@ class AdminSiteTest(TestCase):
         )
 
     def test_doctor_additional_information_listed(self):
-        url = reverse("admin:doctors_service_doctor_change", args=[self.doctor.id])
+        url = reverse(
+            "admin:doctors_service_doctor_change",
+            args=[self.doctor.id]
+        )
         response = self.client.get(url)
         self.assertContains(response, self.doctor.licence_number)
         self.assertContains(response, self.doctor.city)

@@ -78,7 +78,7 @@ class Appointment(models.Model):
     last_name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
     phone = PhoneNumberField()
-    insurance_number = models.IntegerField(unique=True, blank=False)
+    insurance_number = models.CharField(unique=True, max_length=10)
     comments = models.TextField(blank=True)
 
     class Meta:
