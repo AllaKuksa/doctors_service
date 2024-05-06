@@ -1,9 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from doctors_service.models import (
-    DoctorSpecialty,
-    Doctor)
+from doctors_service.models import DoctorSpecialty
 
 DOCTOR_SPECIALTY_URL = reverse("doctors_service:specialties-list")
 DOCTOR_SPECIALTY_DETAIL_URL = reverse(
