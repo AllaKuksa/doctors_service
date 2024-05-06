@@ -87,7 +87,7 @@ class DoctorDetailView(generic.DetailView):
         doctor_schedule = doctor.doctor_schedule.all()
 
         available_schedule = [schedule for schedule in doctor_schedule
-                              if not schedule.appointments.exists()]
+                              if not schedule.is_booked]
         context["available_schedule"] = available_schedule
         return context
 

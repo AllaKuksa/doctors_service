@@ -1,8 +1,10 @@
+from datetime import date
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from doctors_service.models import DoctorSpecialty
+from doctors_service.models import DoctorSpecialty, DoctorSchedule
 from doctors_service.forms import DoctorUpdateForm
 
 
@@ -167,3 +169,79 @@ class PrivateDoctorTest(TestCase):
             get_user_model().objects.get,
             id=self.doctor.id
         )
+
+    def test_create_free_schedule_time_for_patients(self):
+        form_data = {
+            "doctor": self.doctor.id,
+            "date": "2026-10-20",
+            "timeslot": 5,
+        }
+        response = self.client.post(
+            reverse(
+                "doctors_service:doctor-schedule-form",
+                kwargs={"pk": self.doctor.pk}),
+            data=form_data
+        )
+        self.assertEqual(response.status_code, 302)
+        schedule = DoctorSchedule.objects.get(doctor=self.doctor)
+        self.assertEqual(schedule.doctor, self.doctor)
+        self.assertEqual(schedule.date, date.fromisoformat(form_data["date"])),
+        self.assertEqual(schedule.timeslot, form_data["timeslot"]),
+        self.assertRedirects(
+            response,
+            reverse(
+                "doctors_service:doctors-detail",
+                kwargs={"pk": self.doctor.pk}
+            )
+        )
+
+    def test_delete_free_schedule_time_for_patients(self):
+        schedule = DoctorSchedule.objects.create(
+            doctor=self.doctor,
+            date="2026-10-20",
+            timeslot=5
+        )
+        response = self.client.get(
+            reverse(
+                "doctors_service:doctor-schedule-confirm-delete",
+                kwargs={"doctor_id": self.doctor.pk, "pk": schedule.pk}
+            )
+        )
+        self.assertContains(
+            response,
+            "Are you sure that you want to delete the appointment"
+        )
+        self.client.post(
+            reverse(
+                "doctors_service:doctor-schedule-confirm-delete",
+                kwargs={"doctor_id": self.doctor.pk, "pk": schedule.pk}),
+            follow=True
+        )
+        self.assertRaises(
+            ObjectDoesNotExist,
+            DoctorSchedule.objects.get,
+            id=schedule.id
+        )
+
+    def test_only_free_times_retrieve_on_doctors_detail_page(self):
+        schedule_not_booked = DoctorSchedule.objects.create(
+            doctor=self.doctor,
+            date="2026-10-20",
+            timeslot=5,
+            is_booked=False
+        )
+        schedule_booked = DoctorSchedule.objects.create(
+            doctor=self.doctor,
+            date="2026-10-19",
+            timeslot=3,
+            is_booked=True
+        )
+        response = self.client.get(
+            reverse(
+                "doctors_service:doctors-detail",
+                kwargs={"pk": self.doctor.pk}
+            )
+        )
+        available_schedule = response.context["available_schedule"]
+        self.assertIn(schedule_not_booked, available_schedule)
+        self.assertNotIn(schedule_booked, available_schedule)
