@@ -115,13 +115,7 @@ class DoctorUpdateView(LoginRequiredMixin, generic.UpdateView):
 class DoctorDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Doctor
     template_name = "doctors/doctor_delete.html"
-
-    def get_success_url(self):
-        doctor_id = self.kwargs["pk"]
-        return reverse_lazy(
-            "doctors_service:doctors-detail",
-            kwargs={"pk": doctor_id}
-        )
+    success_url = reverse_lazy("doctors_service:doctors-list")
 
 
 class AppointmentListView(LoginRequiredMixin, generic.ListView):
