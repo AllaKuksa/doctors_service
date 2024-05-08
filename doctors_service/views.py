@@ -213,11 +213,16 @@ class DoctorScheduleDeleteView(LoginRequiredMixin, generic.DeleteView):
     template_name = "doctors/doctor_schedule_confirm_delete.html"
 
     def get_success_url(self):
-        doctor_id = self.kwargs["pk"]
+        doctor_id = self.get_object().doctor_id
         return reverse_lazy(
             "doctors_service:doctors-detail",
             kwargs={"pk": doctor_id}
         )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["doctor_schedule"] = self.get_object()
+        return context
 
 
 def load_doctor_schedule(request):
