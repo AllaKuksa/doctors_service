@@ -4,15 +4,19 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
-from doctors_service.forms import (DoctorCreationForm,
-                                   DoctorUpdateForm,
-                                   AppointmentCreationForm,
-                                   DoctorSearchForm,
-                                   AppointmentSearchForm)
-from doctors_service.models import (Doctor,
-                                    DoctorSpecialty,
-                                    Appointment,
-                                    DoctorSchedule)
+from doctors_service.forms import (
+    DoctorCreationForm,
+    DoctorUpdateForm,
+    AppointmentCreationForm,
+    DoctorSearchForm,
+    AppointmentSearchForm
+)
+from doctors_service.models import (
+    Doctor,
+    DoctorSpecialty,
+    Appointment,
+    DoctorSchedule
+)
 
 
 def index(request: HttpRequest) -> HttpResponse:

@@ -1,19 +1,22 @@
 from django.urls import path
-from doctors_service.views import (index,
-                                   DoctorSpecialtyListView,
-                                   DoctorSpecialtyDetailView,
-                                   DoctorListView,
-                                   DoctorDetailView,
-                                   AppointmentListView,
-                                   AppointmentDetailView,
-                                   DoctorScheduleCreateView,
-                                   DoctorScheduleDeleteView,
-                                   DoctorCreateView,
-                                   DoctorUpdateView,
-                                   DoctorDeleteView,
-                                   AppointmentCreateView,
-                                   AppointmentConfirmationDetailView,
-                                   load_doctor_schedule)
+from doctors_service.views import (
+    index,
+    DoctorSpecialtyListView,
+    DoctorSpecialtyDetailView,
+    DoctorListView,
+    DoctorDetailView,
+    AppointmentListView,
+    AppointmentDetailView,
+    DoctorScheduleCreateView,
+    DoctorScheduleDeleteView,
+    DoctorCreateView,
+    DoctorUpdateView,
+    DoctorDeleteView,
+    AppointmentCreateView,
+    AppointmentConfirmationDetailView,
+    load_doctor_schedule
+)
+
 
 urlpatterns = [
     path("", index, name="index"),
