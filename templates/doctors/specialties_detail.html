@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1 style="margin-top: 80px">{{ specialty.specialty }}</h1>
+    {% if specialty %}
+      <table class="table">
+        <tr class="table-primary">
+          <th scope="col">ID</th>
+          <th scope="col">Doctor</th>
+          <th scope="col">City</th>
+          <th scope="col">Hospital</th>
+        </tr>
+      {% for doctor in doctors_list %}
+        <tr>
+          <td>
+            <a href="{% url 'doctors_service:doctors-detail' doctor.pk %}">{{ doctor.id }}</a>
+          </td>
+          <td>
+            {{ doctor.first_name }} {{ doctor.last_name }}
+          </td>
+          <td>
+            {{ doctor.city }}
+          </td>
+          <td>
+            {{ doctor.hospital }}
+          </td>
+        </tr>
+      {% endfor %}
+      </table>
+  {% endif %}
+{% endblock %}

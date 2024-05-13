@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters%}
+
+{% block content %}
+  {% if doctor %}
+    <h1 style="margin-top: 80px;"> Update information </h1>
+  {% else %}
+    <h1 style="margin-top: 80px;"> Registration form for Doctor </h1>
+  {% endif %}
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input class="btn btn-primary" type="submit" value="Submit">
+  </form>
+{% endblock %}

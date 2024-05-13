@@ -1,0 +1,55 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg font-weight-bolder ms-sm-3 fixed-top" style="background-color: #54b7e1;" >
+   <a class="navbar-brand text-white" href="{% url 'doctors_service:index' %}">
+    <img src="{% static 'img/icon.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+    Home
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+            <a class="nav-link text-white" href="{% url 'doctors_service:doctors-list' %}">Doctors<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link text-white" href="{% url 'doctors_service:specialties-list' %}">Specialty<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link text-white" href="{% url 'doctors_service:appointments-list' %}">Appointments List<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link text-white" href="{% url 'doctors_service:doctor-form' %}">Registration for Doctors<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link text-white" href="{% url 'doctors_service:appointment-form' %}">Make Appointment<span class="sr-only">(current)</span></a>
+        </li>
+    </ul>
+  
+    {% if user.is_authenticated %}
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <span class="navbar-text text-white">
+                  <img src="{% static 'img/user.png' %}" width="30" height="30" class="d-inline-block align-top" alt=""> 
+                  <a class="text-white" href="{{ user.get_absolute_url }}">{{ user.get_username }}</a></span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{% url 'logout'%}?next={{request.path}}">
+                  <img src="{% static 'img/logout.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+                </a>
+            </li>
+        </ul>
+      
+    {% else %}
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{% url 'login'%}?next={{request.path}}">Login</a>
+            </li>
+        </ul>
+    {% endif %}
+  
+  </div>
+</nav>

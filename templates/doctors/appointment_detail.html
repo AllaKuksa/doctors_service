@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %} 
+  <h1 style="margin-top: 80px;">Appointment Details  {{ appointment_detail.doctor_schedule }}</h1>
+  <p style="margin-top: 20px"><strong>Doctor: </strong>{{ appointment_detail.doctor }}</p>
+  <hr>
+  <p><strong>Patient: </strong>{{ appointment_detail.first_name }} {{ appointment_detail.last_name }}</p>
+  <hr>
+  <ul>
+    <li>email: {{ appointment_detail.email }}</li>
+    <li>phone: {{ appointment_detail.phone }}</li>
+    <li>insurance number: {{ appointment_detail.insurance_number }}</li>
+  </ul>
+  <hr>
+  <p><strong>Comment: </strong>{{ appointment_detail.comments }}</p>
+  
+{% endblock %}
