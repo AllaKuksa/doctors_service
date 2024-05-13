@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+  
+<h1 style="margin-top: 80px;">Delete doctors</h1>
+  <p>Are you sure that you want to delete the Doctor {{ doctor.first_name }} {{ doctor.last_name }}?</p>
+  <p>
+  <i>
+    All doctor appointment also will be deleted!
+  </i>
+  </p>
+  <form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Yes" class="btn btn-danger">
+  </form>
+
+{% endblock %}

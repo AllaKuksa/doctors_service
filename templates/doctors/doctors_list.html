@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1 style="margin-top: 80px">List of Doctors</h1>
+  <form method="get" action="" class="form-inline">
+    {{ search_form|crispy }}
+    <input class="btn btn-secondary" type="submit" value="Search">
+  </form>
+  <br>
+  {% if doctors_list %}
+    <table class="table">
+      <tr class="table-primary">
+        <th scope="col">ID</th>
+        <th scope="col">Doctor</th>
+        <th scope="col">City</th>
+        <th scope="col">Hospital</th>
+        <th scope="col">Specialty</th>
+      </tr>
+    {% for doctor in doctors_list %}
+      <tr>
+        <td>
+          <a href="{% url 'doctors_service:doctors-detail' doctor.pk %}">
+            {{ doctor.id }}
+          </a>
+        </td>
+        <td>
+          {{ doctor.first_name }} {{ doctor.last_name }}
+        </td>
+        <td>
+          {{ doctor.city }}
+        </td>
+        <td>
+          {{ doctor.hospital }}
+        </td>
+        <td>
+          {% for specialty in doctor.specialty.all %}
+            {{ specialty.specialty }}<br>
+          {% endfor %}
+        </td>
+      </tr>
+    {% endfor %}
+    </table>
+  {% endif %}
+{% endblock %}

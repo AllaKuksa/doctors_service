@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1 style='margin-top: 80px'>
+    Doctor: {{ doctor.first_name }} {{ doctor.last_name }}
+    <a style="float: right" class="button btn btn-danger" href="{% url 'doctors_service:doctor-delete' pk=doctor.id %}">Delete</a>  
+    <a style="float: right" class="button btn btn-primary" href="{% url 'doctors_service:doctor-update' pk=doctor.id %}">Update</a>
+  </h1>
+  <p><strong>Speciality</strong>:</p>
+    {% for specialty in doctor.specialty.all %}
+      <ul>
+        <li> 
+          {{ specialty.specialty }}
+        </li>
+      </ul>
+    {% endfor %}
+  <hr>
+  <p><strong>email: </strong>{{ doctor.email }}</p>
+  <hr>
+  <p><strong>Licence number: </strong>{{ doctor.licence_number }}</p>
+  <hr>
+  <p><strong>City: </strong>{{ doctor.city }}</p>
+  <hr>
+  <p><strong>Hospital: </strong>{{ doctor.hospital }}</p>
+  <hr>
+  <p><strong>
+    Free Schedule:
+    <a class="button btn btn-success" 
+       href="{% url 'doctors_service:doctor-schedule-form' pk=doctor.pk  %}"> 
+      + add additional appointment time for patients 
+    </a>
+  </strong>
+  {% if available_schedule %}
+    <div>
+      <table class="table">
+        <thead>
+          <tr class="table-primary">
+            <th scope="col">Date</th>
+            <th scope="col">Time</th>
+            <th scope="col">Delete</th>
+            <th scope="col">Book Appointment</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for schedule in available_schedule %}
+            <tr>
+              <td>{{ schedule.date }}</td>
+              <td>{{ schedule.time }}</td>
+              <td>
+                <a href="{% url 'doctors_service:doctor-schedule-confirm-delete' doctor_id=doctor.id pk=schedule.id %}">
+                  <button type="button" class="btn btn-primary">delete</button>
+                </a>
+              </td>
+              <td>
+                <a href="{% url 'doctors_service:appointment-form' %}">
+                  <button type="button" class="btn btn-primary">book</button>
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p style="color: red">There is no free time in the doctor's schedule.</p>
+  {% endif %}
+  
+{% endblock %}

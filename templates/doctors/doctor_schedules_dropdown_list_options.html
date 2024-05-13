@@ -1,0 +1,4 @@
+<option value="">---------</option>
+{% for doctor_schedule in doctor_schedules %}
+<option value="{{ doctor_schedule.pk }}"> {{ doctor_schedule.date }} {{ doctor_schedule.time }}</option>
+{% endfor %}
