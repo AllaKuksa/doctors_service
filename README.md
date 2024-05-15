@@ -4,14 +4,38 @@ This is a useful service for doctors and patients.
 Doctors can register at this service, add their detailed information and add free time for patients.
 Patients can see the list of doctors, list of specialties and make appointments to the doctor that they need.
 
-For login, you can use super-admin details:
+## Check it out!
 
-username: admin123, 
-password: admin123
+ [Service for doctors and patients deployed to Render](https://doctors-and-patients-service.onrender.com)
 
-**DB Structure:**
+For login, you can use user details:
+
+username: user
+
+password: user12345
+
+## Installation
+
+Python3 must be already installed
+
+  ```git clone https://github.com/AllaKuksa/doctors_service.git```
+
+  ```cd doctors-service```
+
+  ```python3 -m venv venv```
+
+  ```source venv/bin/activate```
+
+  ```pip install -r requirements.txt```  
+  
+######   ```python manage.py runserver ``` #starts Django Server
+
+## DB Structure:
 
 ![image](https://raw.githubusercontent.com/AllaKuksa/doctors_service/main/Untitled%20Diagram.jpg)
+
+## Features:
+
 
 **1. Login page**
 
